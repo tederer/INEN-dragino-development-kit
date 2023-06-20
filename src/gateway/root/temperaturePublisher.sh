@@ -1,8 +1,9 @@
 #!/bin/sh
 
-SERVER_IP=10.130.1.205
-SERVER_PORT=8080
+SERVER_HOST=provider
+SERVER_PORT=8100
 SENSOR_ID=arduino
+INTERVAL_IN_SEC=5
 
 INPUT_FILE=/var/iot/data
 MAX_HTTP_POST_DURATION_IN_SEC=2
@@ -24,8 +25,8 @@ while [ 1 ]; do
 
    curl -X POST --max-time $MAX_HTTP_POST_DURATION_IN_SEC \
                 -H "Content-Type: application/json" \
-                -d "{\"id\":\"$sensorId\",\"temperature\":\"$sensorValue\"}" \
-                http://$SERVER_IP:$SERVER_PORT
+                -d "{\"sensorId\":\"$sensorId\",\"temperature\":$sensorValue}" \
+                http://$SERVER_HOST:$SERVER_PORT/sensordata
    
-   sleep 1
+   sleep $INTERVAL_IN_SEC
 done
